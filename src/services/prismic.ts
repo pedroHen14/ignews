@@ -1,24 +1,13 @@
-import * as prismic from '@prismicio/client'
-import { enableAutoPreviews } from '@prismicio/next'
-import sm from '../../sm.json'
+import Prismic from '@prismicio/client';
 
-export const endpoint = process.env.PRISMIC_ENDPOINT
-export const repositoryName = prismic.getRepositoryName(endpoint)
-
-export function getPrismicClient(config = {}) {
-  const client = prismic.createClient(
-    endpoint, 
+export function getPrismicClient(req?: unknown) {
+  const prismic = Prismic.client(
+    process.env.PRISMIC_ENDPOINT,
     {
-      ...config,
+      req,
       accessToken: process.env.PRISMIC_ACCESS_TOKEN
     }
   )
 
-  enableAutoPreviews({
-    client,
-    previewData: config,
-    req: config.req
-  })
-  
-  return client;
+  return prismic;
 }
